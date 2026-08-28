@@ -39,8 +39,8 @@ const featuredWorks = [
 ---
 
 <Base
-  title={`${PERSON.name} — Quantum Control · AI on Edge · Accelerators`}
-  description="Building intelligent computing systems at the boundary between algorithms and hardware."
+  title={`${PERSON.alternateName} — Quantum Control & Real-Time ML | Berkeley Lab`}
+  description={PERSON.tagline}
 >
   <div class="landing">
     <!-- Full-screen Hero with Immersive Graphic -->
@@ -179,6 +179,36 @@ const featuredWorks = [
 
     </section>
 
+    <!-- Bio. This is the page's indexable substance: the hero is a graphic,
+         and a crawler needs prose that names the person, the institution and
+         the subfield in one place. -->
+    <section class="bio">
+      <div class="shell">
+        <p class="bio-lede">
+          <b>Neel Vora</b> is a Scientific Engineer Associate at
+          <a href={PERSON.affiliationUrl}>Lawrence Berkeley National Laboratory</a>,
+          in the {PERSON.division}, where he works with the
+          {PERSON.program} program on real-time machine learning for
+          superconducting qubit control.
+        </p>
+        <p>
+          His research puts inference where the physics is: FPGA and RFSoC
+          hardware that classifies a qubit's state in tens of nanoseconds,
+          fast enough to act on the result inside the coherence window. That
+          work spans qubit state discrimination, mid-circuit measurement, and
+          cryogenic accelerators that run at 4&nbsp;Kelvin beside the quantum
+          processor itself.
+        </p>
+        <p>
+          Before Berkeley Lab he completed an M.S. in Computer Science at
+          <a href="https://www.uta.edu/">The University of Texas at Arlington</a>,
+          where he built edge-AI systems for acoustic drone tracking and
+          low-power physiological sensing. He holds a B.Tech in Information
+          Technology from Dharmsinh Desai University.
+        </p>
+      </div>
+    </section>
+
     <!-- Featured Works -->
     <section class="works">
       <div class="shell">
@@ -309,6 +339,27 @@ const featuredWorks = [
   @keyframes bounce {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* Bio */
+  .bio {
+    padding: 5rem 0 1rem;
+    background: var(--paper);
+  }
+
+  .bio p {
+    max-width: 42rem;
+    color: var(--ink-soft);
+  }
+
+  .bio-lede {
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+
+  .bio-lede b {
+    font-weight: 700;
   }
 
   /* Works Section */

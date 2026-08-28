@@ -9,16 +9,26 @@ export function getStaticPaths() {
 
 const { pub } = Astro.props;
 
+// Author names as they appear on the paper are abbreviated ("N Vora",
+// "NR Vora"). Pointing those variants at the site's Person @id is what tells
+// a crawler they are all the same entity as the person this site is about.
+const SELF = /^N\.?\s*R?\.?\s*Vora$/i;
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'ScholarlyArticle',
   headline: pub.title,
   name: pub.title,
-  author: pub.authors.split(', ').map((n) => ({ '@type': 'Person', name: n })),
+  author: pub.authors.split(', ').map((n) =>
+    SELF.test(n.trim())
+      ? { '@type': 'Person', '@id': `${SITE_URL}/#person`, name: PERSON.name }
+      : { '@type': 'Person', name: n }
+  ),
   datePublished: String(pub.year),
   isPartOf: { '@type': 'Periodical', name: pub.venue },
   url: `${SITE_URL}/publications/${pub.slug}`,
   ...(pub.doi ? { identifier: `https://doi.org/${pub.doi}`, sameAs: `https://doi.org/${pub.doi}` } : {}),
+  ...(pub.arxiv ? { sameAs: `https://arxiv.org/abs/${pub.arxiv}` } : {}),
   abstract: pub.summary,
   mainEntityOfPage: `${SITE_URL}/publications/${pub.slug}`,
 };

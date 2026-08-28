@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://neelvora.github.io/sitemap-index.xml
+Sitemap: https://nrvora.github.io/sitemap-index.xml

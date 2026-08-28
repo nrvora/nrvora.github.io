@@ -15,6 +15,7 @@ interface Props {
 
 const { title, description, schema = null, index = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, SITE_URL).href.replace(/\/$/, '') || SITE_URL;
+const isHome = Astro.url.pathname === '/';
 
 // The Person graph is emitted on EVERY page. Repetition is correct here: it is
 // how the whole site resolves to one entity rather than a set of loose pages.
@@ -41,6 +42,27 @@ const personSchema = {
   knowsAbout: PERSON.knowsAbout,
   sameAs: PERSON.sameAs.filter((u) => !u.includes('TODO')),
 };
+
+// A WebSite node with the Person as its publisher, plus `mainEntity` on the
+// homepage, is what makes the site resolve to a person rather than a set of
+// documents that merely mention one.
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@type': isHome ? 'ProfilePage' : 'WebPage',
+  '@id': `${canonical}#page`,
+  url: canonical,
+  name: title,
+  description,
+  inLanguage: 'en',
+  isPartOf: {
+    '@type': 'WebSite',
+    '@id': `${SITE_URL}/#website`,
+    url: SITE_URL,
+    name: PERSON.name,
+    publisher: { '@id': `${SITE_URL}/#person` },
+  },
+  ...(isHome ? { mainEntity: { '@id': `${SITE_URL}/#person` } } : { about: { '@id': `${SITE_URL}/#person` } }),
+};
 ---
 
 <!doctype html>
@@ -53,12 +75,21 @@ const personSchema = {
     <link rel="canonical" href={canonical} />
     {!index && <meta name="robots" content="noindex" />}
 
-    <meta property="og:type" content="profile" />
+    <meta property="og:type" content={isHome ? 'profile' : 'article'} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:site_name" content={PERSON.name} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={`${SITE_URL}/og.png`} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${PERSON.name} — ${PERSON.affiliation}`} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${SITE_URL}/og.png`} />
+    <meta name="author" content={PERSON.name} />
 
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -67,6 +98,7 @@ const personSchema = {
       type="application/ld+json"
       set:html={JSON.stringify(personSchema)}
     />
+    <script type="application/ld+json" set:html={JSON.stringify(siteSchema)} />
     {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
   </head>
   <body>
