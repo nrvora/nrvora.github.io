@@ -1,0 +1,31 @@
+---
+import { NAV, PERSON } from '../consts';
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+---
+
+<header class="masthead">
+  <div class="shell masthead-inner">
+    <a class="wordmark" href="/">{PERSON.name}</a>
+    <nav aria-label="Primary">
+      {
+        NAV.map((item) => (
+          <a
+            class="navlink"
+            href={item.href}
+            aria-current={path === item.href ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.25rem;
+  }
+</style>

@@ -1,0 +1,337 @@
+---
+import Base from '../layouts/Base.astro';
+import { PERSON } from '../consts';
+
+const featuredWorks = [
+  {
+    id: 'qubicml',
+    slug: 'qubicml-fpga-quantum-state-discrimination',
+    title: 'QubiCML',
+    subtitle: 'Real-time quantum state discrimination on FPGA',
+    venue: 'IEEE QCE 2024',
+    stat: '54ns',
+  },
+  {
+    id: 'dronechase',
+    slug: 'dronechase-cross-modality-drone-tracking',
+    title: 'DroneChase',
+    subtitle: 'Cross-modality UAV tracking system',
+    venue: 'ACM MobiSys 2023',
+    stat: '+26%',
+  },
+  {
+    id: 'signal',
+    slug: 'physiological-signal-compression-headwear',
+    title: 'Signal Compression',
+    subtitle: 'Edge-efficient physiological sensing',
+    venue: 'arXiv 2023',
+    stat: '<1W',
+  },
+  {
+    id: 'cryo',
+    slug: 'cryogenic-accelerator-4k-quantum-state-discrimination',
+    title: 'Cryo Accelerator',
+    subtitle: 'ML inference at 4 Kelvin',
+    venue: 'npj 2026',
+    stat: '4K',
+  },
+];
+---
+
+<Base
+  title={`${PERSON.name} — Quantum Control · AI on Edge · Accelerators`}
+  description="Building intelligent computing systems at the boundary between algorithms and hardware."
+>
+  <div class="landing">
+    <!-- Full-screen Hero with Immersive Graphic -->
+    <section class="hero">
+      <div class="hero-bg">
+        <svg class="hero-svg" viewBox="0 0 1400 900" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="dots" width="50" height="50" patternUnits="userSpaceOnUse">
+              <circle cx="25" cy="25" r="1" fill="rgba(16, 23, 32, 0.08)"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dots)"/>
+
+          <!-- Concentric circles - like a signal or measurement -->
+          <g transform="translate(1000, 400)" stroke="rgba(16, 23, 32, 0.08)" fill="none" stroke-width="1">
+            <circle r="50"/>
+            <circle r="100"/>
+            <circle r="150"/>
+            <circle r="200"/>
+            <circle r="250"/>
+            <circle r="300"/>
+          </g>
+
+          <!-- Single pulsing point at center -->
+          <circle cx="1000" cy="400" r="4" fill="var(--ink)">
+            <animate attributeName="r" values="4;6;4" dur="3s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="1;0.6;1" dur="3s" repeatCount="indefinite"/>
+          </circle>
+
+          <!-- Expanding ring -->
+          <circle cx="1000" cy="400" r="50" fill="none" stroke="var(--ink)" stroke-width="1" opacity="0">
+            <animate attributeName="r" values="20;300" dur="4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" values="0.4;0" dur="4s" repeatCount="indefinite"/>
+          </circle>
+        </svg>
+      </div>
+
+      <!-- Hero Content Overlay -->
+      <div class="hero-content">
+        <div class="shell">
+          <div class="hero-text">
+            <p class="hero-affiliation">{PERSON.affiliation}</p>
+            <h1 class="hero-name">Neel R. Vora</h1>
+            <p class="hero-tagline">
+              Machine learning that runs where the physics happens
+            </p>
+            <div class="hero-domains">
+              <span class="domain">Quantum Control</span>
+              <span class="domain">AI on Edge</span>
+              <span class="domain">Accelerators</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Featured Works -->
+    <section class="works">
+      <div class="shell">
+        <h2 class="section-title">Featured Research</h2>
+
+        <div class="works-grid">
+          {featuredWorks.map((work) => (
+            <a href={`/publications/${work.slug}`} class="work-card">
+              <div class="work-meta">
+                <span class="work-venue">{work.venue}</span>
+                <h3 class="work-title">{work.title}</h3>
+                <p class="work-sub">{work.subtitle}</p>
+                <span class="work-stat">{work.stat}</span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Links -->
+    <section class="links">
+      <div class="shell">
+        <div class="links-row">
+          <a href="/research" class="link-card">Research →</a>
+          <a href="/publications" class="link-card">Publications →</a>
+          <a href="/synseis" class="link-card">Synseis →</a>
+          <a href="https://scholar.google.com/citations?user=EV0TOzcAAAAJ" class="link-card">Scholar →</a>
+          <a href="https://github.com/nrvora" class="link-card">GitHub →</a>
+          <a href="mailto:nrvora@lbl.gov" class="link-card">Contact →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .landing {
+    --accent: var(--ink);
+  }
+
+  /* Hero - Full bleed graphic */
+  .hero {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .hero-text {
+    max-width: 600px;
+  }
+
+  .hero-affiliation {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0 0 1rem;
+  }
+
+  .hero-name {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin: 0 0 1rem;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+    line-height: 1.4;
+  }
+
+  .hero-domains {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .domain {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--ink);
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    padding: 0.5rem 1rem;
+    border-radius: 2rem;
+  }
+
+  .scroll-cue {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--ink-soft);
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .scroll-cue svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+  }
+
+  /* Works Section */
+  .works {
+    padding: 6rem 0;
+    background: var(--paper);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 55rem) {
+    .works-grid { grid-template-columns: 1fr; }
+  }
+
+  .work-card {
+    display: block;
+    background: var(--paper-raised);
+    border: 1px solid var(--rule);
+    border-radius: 1rem;
+    overflow: hidden;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .work-card:hover {
+    border-color: var(--ink);
+    transform: translateY(-4px);
+    box-shadow: 0 16px 48px -12px rgba(16, 23, 32, 0.15);
+  }
+
+  .work-meta {
+    padding: 1.5rem;
+  }
+
+  .work-venue {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .work-title {
+    font-size: 1.35rem;
+    margin: 0.25rem 0;
+    color: var(--ink);
+  }
+
+  .work-sub {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .work-stat {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-family: var(--display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  /* Links Section */
+  .links {
+    padding: 4rem 0;
+    background: var(--paper-raised);
+    border-top: 1px solid var(--rule);
+  }
+
+  .links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+  }
+
+  .link-card {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .link-card:hover {
+    border-color: var(--ink);
+    color: var(--ink);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-cue, .state-vector, .state-point, .radar-sweep, .ecg, .chip-core, .fpga-cells rect, .frost circle { animation: none; }
+  }
+</style>

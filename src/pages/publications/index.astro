@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import { byYear } from '../../data/publications';
+import { SITE_URL, PERSON } from '../../consts';
+
+const listSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: `Publications — ${PERSON.name}`,
+  url: `${SITE_URL}/publications`,
+  about: { '@id': `${SITE_URL}/#person` },
+  hasPart: byYear.map((p) => ({
+    '@type': 'ScholarlyArticle',
+    name: p.title,
+    datePublished: String(p.year),
+    url: `${SITE_URL}/publications/${p.slug}`,
+  })),
+};
+---
+
+<Base
+  title="Publications — Neel R. Vora | Quantum control, FPGA ML, mobile sensing"
+  description="Peer-reviewed papers and preprints by Neel R. Vora, including QubiCML (IEEE QCE 2024), Scientific Reports 2024, GLSVLSI 2026, and ACM DroNet 2023."
+  schema={listSchema}
+>
+  <div class="shell hero">
+    <span class="eyebrow">Publications</span>
+    <h1>Papers</h1>
+    <p class="thesis">
+      Each entry links to the version of record. Summaries are written for
+      readers outside the subfield.
+    </p>
+  </div>
+
+  <section class="band">
+    <div class="shell">
+      <ul class="entries">
+        {
+          byYear.map((p) => (
+            <li class="entry">
+              <div class="entry-meta">
+                <span>
+                  {p.venueShort} {p.year}
+                </span>
+                {p.role === 'first' && <span class="lead-author">First author</span>}
+                {p.doi && <span>DOI {p.doi}</span>}
+              </div>
+              <h2 class="entry-title">
+                <a href={`/publications/${p.slug}`}>{p.title}</a>
+              </h2>
+              <p class="entry-authors">{p.authors}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>

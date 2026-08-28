@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { PERSON, SITE_URL } from '../consts';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Extra JSON-LD (e.g. ScholarlyArticle) rendered alongside the Person graph. */
+  schema?: Record<string, unknown> | null;
+  /** Set false on pages you don't want indexed. */
+  index?: boolean;
+}
+
+const { title, description, schema = null, index = true } = Astro.props;
+const canonical = new URL(Astro.url.pathname, SITE_URL).href.replace(/\/$/, '') || SITE_URL;
+
+// The Person graph is emitted on EVERY page. Repetition is correct here: it is
+// how the whole site resolves to one entity rather than a set of loose pages.
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE_URL}/#person`,
+  name: PERSON.name,
+  alternateName: PERSON.alternateName,
+  url: SITE_URL,
+  jobTitle: PERSON.jobTitle,
+  description: PERSON.tagline,
+  worksFor: {
+    '@type': 'ResearchOrganization',
+    name: PERSON.affiliation,
+    url: PERSON.affiliationUrl,
+    department: { '@type': 'Organization', name: PERSON.division },
+  },
+  alumniOf: PERSON.alumniOf.map((a) => ({
+    '@type': 'CollegeOrUniversity',
+    name: a.name,
+    url: a.url,
+  })),
+  knowsAbout: PERSON.knowsAbout,
+  sameAs: PERSON.sameAs.filter((u) => !u.includes('TODO')),
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {!index && <meta name="robots" content="noindex" />}
+
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={PERSON.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(personSchema)}
+    />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <Nav />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

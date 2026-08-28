@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+
+const press = [
+  {
+    outlet: 'Berkeley Lab (ATAP Division)',
+    year: 2024,
+    title: 'Machine Learning Accelerates Progress Toward Scalable Quantum Computers',
+    note: 'Feature on QubiCML, developed with UC Berkeley and UMass Amherst.',
+    href: 'https://atap.lbl.gov/news/machine-learning-accelerates-progress-toward-scalable-quantum-computers/',
+  },
+  {
+    outlet: "Tom's Hardware",
+    year: 2023,
+    title: 'Raspberry Pi tracks unseen drones using sound',
+    note: 'Coverage of DroneChase.',
+    href: '',
+  },
+  {
+    outlet: 'Adafruit',
+    year: 2023,
+    title: 'Raspberry Pi Tracks Unseen Drones Using Sound',
+    note: 'Coverage of DroneChase.',
+    href: 'https://blog.adafruit.com/2023/10/02/raspberry-pi-tracks-unseen-drones-using-sound-drone-droneday/',
+  },
+];
+
+const service = [
+  'Program Committee — 1st ACM International Workshop on Sensing, Computing and Communication Systems with Quantum (QSys \u201925)',
+  'Reviewer — Measurement Science and Technology (IOP)',
+  'Reviewer — Springer Nature',
+  'Visiting Research Scholar — University of Massachusetts Amherst',
+];
+
+const talks = [
+  { venue: 'American Physical Society', place: 'Anaheim, California', year: 2025, topic: 'Quantum machine learning' },
+  { venue: 'ACM MobiSys', place: 'Helsinki, Finland', year: 2023, topic: 'UAV detection and tracking' },
+];
+---
+
+<Base
+  title="Press, talks and service — Neel R. Vora"
+  description="Media coverage of QubiCML and DroneChase, conference talks at APS and ACM MobiSys, patent filing, and peer-review service."
+>
+  <div class="shell hero">
+    <span class="eyebrow">Record</span>
+    <h1>Press, talks, service</h1>
+  </div>
+
+  <section class="band">
+    <div class="shell">
+      <span class="eyebrow">Coverage</span>
+      <ul class="entries">
+        {
+          press.map((p) => (
+            <li class="entry">
+              <div class="entry-meta">
+                <span>{p.outlet}</span>
+                <span>{p.year}</span>
+              </div>
+              <h2 class="entry-title">
+                {p.href ? <a href={p.href}>{p.title}</a> : p.title}
+              </h2>
+              <p class="entry-authors">{p.note}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell prose">
+      <span class="eyebrow">Intellectual property</span>
+      <h2>Patent</h2>
+      <p>
+        <strong>FPGA-based In-Situ Machine Learning for Real-Time Quantum State
+        Discrimination</strong> — Berkeley Lab IPO record 2024-145. Principal
+        investigators: Yilun Xu, Neel Vora, Gang Huang, Phuc Nguyen. US
+        application pending.
+      </p>
+      <p>
+        <a href="https://ipo.lbl.gov/2025/06/04/fpga-based-in-situ-machine-learning-for-real-time-quantum-state-discrimination-2024-145/">
+          Berkeley Lab IPO listing →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="shell prose">
+      <span class="eyebrow">Talks</span>
+      <h2>Invited and conference talks</h2>
+      <ul class="datalist">
+        {
+          talks.map((t) => (
+            <li>
+              <b>{t.year}</b> — {t.venue}, {t.place}. {t.topic}.
+            </li>
+          ))
+        }
+      </ul>
+
+      <span class="eyebrow" style="margin-top:2.5rem">Service</span>
+      <h2>Community</h2>
+      <ul class="datalist">
+        {service.map((s) => <li>{s}</li>)}
+      </ul>
+    </div>
+  </section>
+</Base>

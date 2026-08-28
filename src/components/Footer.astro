@@ -1,0 +1,28 @@
+---
+import { PERSON } from '../consts';
+
+const links = [
+  { label: 'Google Scholar', href: 'https://scholar.google.com/citations?user=EV0TOzcAAAAJ' },
+  { label: 'Berkeley Lab profile', href: 'https://profiles.lbl.gov/410489-neel-rajeshbhai-vora' },
+  { label: 'LinkedIn', href: 'https://www.linkedin.com/in/neelvora27/' },
+  { label: 'Synseis', href: 'https://synseis.com' },
+];
+---
+
+<footer class="colophon">
+  <div class="shell">
+    <div class="colophon-links">
+      {
+        links.map((l) => (
+          <a href={l.href} rel="me noopener">
+            {l.label}
+          </a>
+        ))
+      }
+    </div>
+    <p style="max-width:38rem;margin:0">
+      {PERSON.name} — {PERSON.jobTitle}, {PERSON.division},
+      {PERSON.affiliation}. {PERSON.location}.
+    </p>
+  </div>
+</footer>

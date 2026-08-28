@@ -1,0 +1,80 @@
+---
+import Base from '../../layouts/Base.astro';
+import { publications } from '../../data/publications';
+import { SITE_URL, PERSON } from '../../consts';
+
+export function getStaticPaths() {
+  return publications.map((pub) => ({ params: { slug: pub.slug }, props: { pub } }));
+}
+
+const { pub } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: pub.title,
+  name: pub.title,
+  author: pub.authors.split(', ').map((n) => ({ '@type': 'Person', name: n })),
+  datePublished: String(pub.year),
+  isPartOf: { '@type': 'Periodical', name: pub.venue },
+  url: `${SITE_URL}/publications/${pub.slug}`,
+  ...(pub.doi ? { identifier: `https://doi.org/${pub.doi}`, sameAs: `https://doi.org/${pub.doi}` } : {}),
+  abstract: pub.summary,
+  mainEntityOfPage: `${SITE_URL}/publications/${pub.slug}`,
+};
+---
+
+<Base
+  title={`${pub.title} — ${pub.venueShort} ${pub.year} | Neel R. Vora`}
+  description={pub.summary.slice(0, 200)}
+  schema={schema}
+>
+  <div class="shell hero">
+    <span class="eyebrow">
+      {pub.venueShort} · {pub.year}{pub.role === 'first' ? ' · First author' : ''}
+    </span>
+    <h1 style="font-size:clamp(1.8rem,4.5vw,2.9rem)">{pub.title}</h1>
+    <p class="entry-authors" style="max-width:42rem">{pub.authors}</p>
+  </div>
+
+  <section class="band">
+    <div class="shell prose">
+      <h2>What it does</h2>
+      <p>{pub.summary}</p>
+      <h2>Why it matters</h2>
+      <p>{pub.significance}</p>
+
+      <ul class="datalist">
+        <li><b>Venue</b> — {pub.venue}</li>
+        {pub.doi && (
+          <li>
+            <b>DOI</b> — <a href={`https://doi.org/${pub.doi}`}>{pub.doi}</a>
+          </li>
+        )}
+        {pub.arxiv && (
+          <li>
+            <b>arXiv</b> — <a href={`https://arxiv.org/abs/${pub.arxiv}`}>{pub.arxiv}</a>
+          </li>
+        )}
+      </ul>
+
+      {
+        pub.url && (
+          <p>
+            <a href={pub.url}>Read the version of record →</a>
+          </p>
+        )
+      }
+      {
+        !pub.verified && (
+          <div class="callout">
+            Record pending: DOI not yet linked on this page. Add it in
+            <code> src/data/publications.ts</code>.
+          </div>
+        )
+      }
+
+      <p style="margin-top:2rem"><a href="/publications">← All publications</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_URL } from '../consts';
+
+// Synseis currently has almost no organic search footprint. This page is the
+// cheapest way to fix that: an indexed, entity-linked description of the
+// company that points at synseis.com.
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Synseis',
+  url: 'https://synseis.com',
+  description:
+    'AI-native custom silicon design. Agentic, FPGA-first tooling that compresses the path from specification to GDSII.',
+  founder: { '@id': `${SITE_URL}/#person` },
+  areaServed: 'Worldwide',
+  knowsAbout: [
+    'Electronic design automation',
+    'RTL generation',
+    'FPGA prototyping',
+    'Hardware accelerators',
+    'Agentic chip design',
+  ],
+};
+---
+
+<Base
+  title="Synseis — AI-native chip design | Neel R. Vora, founding team"
+  description="Synseis builds agentic, FPGA-first tooling for custom silicon design, compressing spec-to-GDSII from months to weeks. Neel R. Vora leads hardware research on the founding team."
+  schema={orgSchema}
+>
+  <div class="shell hero">
+    <span class="eyebrow">Founding team · Hardware research</span>
+    <h1>Synseis</h1>
+    <p class="thesis">
+      Custom silicon takes eighteen to twenty-four months and a team that
+      already knows the tools. Synseis is an attempt to make that a matter of
+      weeks, and to make it approachable by people who are not career EDA
+      engineers.
+    </p>
+  </div>
+
+  <section class="band">
+    <div class="shell prose">
+      <h2>The product</h2>
+      <p>
+        Synseis Labs is an early-access desktop application — macOS and Linux —
+        that runs an agentic design flow: an accelerator specification goes in,
+        and architecture, RTL, an FPGA project, synthesis and implementation
+        come out, with hardware-in-the-loop validation rather than simulation
+        alone.
+      </p>
+
+      <h2>Why this, and why now</h2>
+      <p>
+        Most AI-for-hardware tools are assistants. They help an engineer who
+        already has the flow set up and the licences paid for. That leaves the
+        two hardest barriers untouched: vendor lock-in, and the fact that
+        getting started at all requires expertise most teams do not have.
+      </p>
+      <ul>
+        <li>Vendor-agnostic rather than tied to one toolchain</li>
+        <li>Hardware-in-the-loop verification, not simulation only</li>
+        <li>A reusable design corpus that compounds across projects</li>
+        <li>Built so a team of five can attempt a full-scale design</li>
+      </ul>
+
+      <h2>Where it stands</h2>
+      <p>
+        Early access, with a university pilot program running — student users
+        and academic designs in development.
+      </p>
+
+      <div class="callout">
+        <a href="https://synseis.com">synseis.com</a> — for access, pilots, or
+        investor conversations.
+      </div>
+
+      <h2>My role</h2>
+      <p>
+        I cover hardware research on the founding team: accelerator
+        architecture, the RTL generation path, and the question of what an
+        agent actually needs to know about a target device to produce a design
+        that closes timing on it.
+      </p>
+    </div>
+  </section>
+</Base>

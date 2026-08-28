@@ -1,0 +1,131 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base
+  title="Research — FPGA quantum state discrimination, mid-circuit measurement, RL calibration | Neel R. Vora"
+  description="Real-time quantum state discrimination on FPGAs, mid-circuit measurement for superconducting qubits, reinforcement learning for gate calibration, and crosstalk characterization at Berkeley Lab."
+>
+  <div class="shell hero">
+    <span class="eyebrow">Research</span>
+    <h1>Deciding fast enough to matter</h1>
+    <p class="thesis">
+      Quantum control is a latency problem before it is a machine learning
+      problem. These are the threads I work on, and why each one exists.
+    </p>
+  </div>
+
+  <section class="band" id="readout">
+    <div class="shell prose">
+      <span class="eyebrow">Thread 01 · Readout</span>
+      <h2>Real-time quantum state discrimination on FPGA</h2>
+      <p>
+        Reading a qubit means firing a microwave pulse at its readout resonator
+        and interpreting what comes back. The returned signal is noisy, and the
+        two states you are trying to tell apart overlap. Classically you would
+        integrate the signal, plot it on the IQ plane, and draw a boundary
+        between two clouds of points.
+      </p>
+      <p>
+        That works fine when the answer can arrive whenever. It does not work
+        for mid-circuit measurement, where the result has to come back in time
+        to change what the circuit does next. Conventional pipelines ship the
+        raw measurement to a host processor, and the round trip runs into
+        milliseconds — while the qubit itself holds coherence for microseconds.
+        The decision arrives after the thing it was supposed to decide about is
+        gone.
+      </p>
+      <div class="callout">
+        QubiCML puts a compact multi-layer neural network on the control FPGA
+        itself. Inference completes in 54 ns. Evaluated on in-house
+        superconducting processors, it reached 98.5% average accuracy with a
+        500 ns readout window — the first time ML-powered state discrimination
+        ran on an RFSoC platform for mid-circuit measurement.
+      </div>
+      <p>
+        The engineering constraint that shapes everything: the network has to
+        fit in fabric alongside the existing control logic, hit timing closure,
+        and produce an answer in fixed point. There is no room for a model that
+        is merely accurate.
+      </p>
+      <ul class="datalist">
+        <li><b>Platform</b> — Xilinx Zynq UltraScale+ RFSoC, ZCU216</li>
+        <li><b>Stack</b> — QubiC open-source FPGA control system</li>
+        <li><b>Papers</b> — IEEE QCE 2024; GLSVLSI 2026</li>
+      </ul>
+      <p>
+        <a href="/publications/qubicml-fpga-quantum-state-discrimination">QubiCML (IEEE QCE 2024)</a>
+        ·
+        <a href="/publications/ml-enabled-fpga-framework-mid-circuit-measurement">FPGA framework (GLSVLSI 2026)</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" id="calibration">
+    <div class="shell prose">
+      <span class="eyebrow">Thread 02 · Control</span>
+      <h2>Reinforcement learning for gate calibration</h2>
+      <p>
+        Superconducting gates drift. Keeping them accurate means repeatedly
+        retuning pulse amplitude, phase and frequency — a process that is
+        well-understood in its coarse stages and fiddly in its final ones,
+        where the remaining error is small, correlated and hardware-specific.
+      </p>
+      <p>
+        I have been treating that last stage as a control problem: an agent
+        observes the calibration state, adjusts parameters, and is rewarded
+        against a phase-estimation signal. The interesting difficulty is that
+        the agent needs memory — what happened two adjustments ago matters —
+        which standard implementations of continuous-control algorithms handle
+        poorly.
+      </p>
+      <p>
+        The work sits on top of the QubiC and QCal ecosystem, so an agent that
+        works in simulation can be pointed at real hardware without a rewrite.
+      </p>
+    </div>
+  </section>
+
+  <section class="band" id="crosstalk">
+    <div class="shell prose">
+      <span class="eyebrow">Thread 03 · Characterization</span>
+      <h2>Crosstalk and Hamiltonian learning</h2>
+      <p>
+        Operating one qubit disturbs its neighbours. That violation of
+        locality is a coherent error, and coherent errors are the ones that
+        accumulate rather than average out. Our approach fits a
+        first-principles Hamiltonian to data from simultaneous Rabi
+        experiments, then uses the fitted model to predict three- and
+        four-qubit behaviour.
+      </p>
+      <p>
+        The practical payoff is that you can study a multi-qubit circuit
+        without running it, and characterize crosstalk across an entire chip —
+        which turns out to be a useful input to processor design, not just
+        error mitigation.
+      </p>
+      <p>
+        <a href="/publications/crosstalk-dynamics-hamiltonian-learning-rabi">Read the paper</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band" id="sensing">
+    <div class="shell prose">
+      <span class="eyebrow">Thread 04 · Earlier</span>
+      <h2>Sensing under the same constraint</h2>
+      <p>
+        Before quantum, the same problem wore different clothes. DroneChase
+        tracked a flying drone by fusing what it heard with what it saw, so
+        the track survived occlusion and darkness — running on a Raspberry Pi
+        mounted to a moving vehicle. EarSD detected seizure onset from signals
+        measured behind the ear, in a device small enough to live inside
+        headphones instead of a hospital.
+      </p>
+      <p>
+        Both are the same engineering question as qubit readout: run a useful
+        model where the power, latency and bandwidth budgets are already spent.
+      </p>
+    </div>
+  </section>
+</Base>
