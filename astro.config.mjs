@@ -10,7 +10,7 @@ import sitemap from '@astrojs/sitemap';
 // `base: '/website'`. A user site (repo named neelvora.github.io) needs no base.
 // ---------------------------------------------------------------------------
 export default defineConfig({
-  site: 'https://neelvora.github.io',
+  site: 'https://nrvora.github.io',
   trailingSlash: 'ignore',
   integrations: [sitemap()],
   build: { format: 'directory' },

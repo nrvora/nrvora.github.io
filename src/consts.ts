@@ -6,7 +6,7 @@
 // entity instead of confusing you with the other people named Neel Vora.
 // ---------------------------------------------------------------------------
 
-export const SITE_URL = 'https://neelvora.github.io';
+export const SITE_URL = 'https://nrvora.github.io';
 
 export const PERSON = {
   name: 'Neel Vora',
